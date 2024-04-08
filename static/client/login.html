@@ -84,12 +84,20 @@
                         return response.json();
                     })
                     .then(data => {
-                        window.location.href = "/dashboard";
+                        if (user.email == "admin@gmail.com"){
+                            window.location.href = "/admin";
+                        } else {
+                            window.location.href = "/dashboard";
+                        }
                         console.log(data);
                     })
                     .catch(error => {
                         // Handle errors
-                        window.location.href = "/form";
+                        if (user.email == "admin@gmail.com"){
+                            window.location.href = "/admin";
+                        } else {
+                            window.location.href = "/form";
+                        }
 
                         // Access the status code from the error object if available
                         if (error.response) {

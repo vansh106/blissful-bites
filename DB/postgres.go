@@ -216,6 +216,56 @@ func AppendMeals(values map[string]interface{}) error {
 	return nil
 }
 
+func ReadAllUsers(query string) ([]map[string]interface{}, error) {
+	rows, err := db.Query(query)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	// Initialize a slice to hold the results
+	results := []map[string]interface{}{}
+
+	// Iterate over the rows
+	for rows.Next() {
+		// Create a map to hold the values of the current row
+		rowData := make(map[string]interface{})
+
+		// Get column names
+		columns, err := rows.Columns()
+		if err != nil {
+			return nil, err
+		}
+
+		// Create a slice to store values for Scan
+		values := make([]interface{}, len(columns))
+		for i := range columns {
+			values[i] = new(interface{})
+		}
+
+		// Scan the values of the current row into the map
+		err = rows.Scan(values...)
+		if err != nil {
+			return nil, err
+		}
+
+		// Convert interface{} values to appropriate types and store them in the map
+		for i, col := range columns {
+			rowData[col] = *(values[i].(*interface{}))
+		}
+
+		// Append the map to the results slice
+		results = append(results, rowData)
+	}
+
+	// Check for errors during row iteration
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return results, nil
+}
+
 func ReadRowData(primaryKeyValue string) (map[string]interface{}, error) {
 	rowData := make(map[string]interface{})
 
@@ -274,5 +324,32 @@ func UpdateDM(email string, message string) error {
 	}
 
 	fmt.Println("Text field updated successfully!")
+	return nil
+}
+
+func UpdateDiet(email string, diet string, healthscore int) error {
+	var query string
+	if healthscore == 0 {
+		query = "UPDATE user_details SET diet_plan = $1 WHERE email = $2"
+	} else {
+		query = "UPDATE user_details SET diet_plan = $1, healthscore = $2 WHERE email = $3"
+	}
+	stmt, err := db.Prepare(query)
+	if err != nil {
+		return err
+	}
+	defer stmt.Close()
+
+	var err2 error
+	if healthscore == 0 {
+		_, err2 = stmt.Exec(diet, email)
+	}else {
+		_, err2 = stmt.Exec(diet, healthscore, email)
+	}
+	if err2 != nil {
+		return err2
+	}
+
+	fmt.Println("Diet updated successfully!")
 	return nil
 }

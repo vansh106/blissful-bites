@@ -32,6 +32,17 @@ func UserDataHandler(c *gin.Context) {
 	c.JSON(http.StatusOK, data)
 }
 
+func AllUsersDataHandler(c *gin.Context) {
+	allUsers, err := DB.ReadAllUsers("SELECT * FROM user_details")
+	if err != nil {
+		fmt.Println("[All users handler]", err)
+		c.JSON(http.StatusInternalServerError, gin.H{"error":err.Error()})
+		return
+	}
+	c.HTML(http.StatusOK, "admin.html", allUsers)
+
+}
+
 func FirstLoginHandler(c *gin.Context) {
 	email := c.Query("email")
 	fmt.Println(email)

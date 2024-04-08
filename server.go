@@ -17,7 +17,6 @@ func main() {
 
 	r := gin.Default()
 	r.LoadHTMLGlob("static/client/*")
-	r.LoadHTMLGlob("static/admin/*")
 
     //client endpoints
 	r.GET("/", func(c *gin.Context) {
@@ -71,7 +70,19 @@ func main() {
     // admin endpoints
     
     r.GET("/admin", func(c *gin.Context) {
-        c.HTML(http.StatusOK, "admin.html", gin.H{})
+        Controllers.AllUsersDataHandler(c)
+    })
+
+    r.GET("/dm", func(c *gin.Context) {
+        Controllers.DmHandler(c)
+    })
+
+    r.GET("/user", func(c *gin.Context) {
+        c.HTML(http.StatusOK, "user.html", gin.H{})
+    })
+	
+    r.POST("/updateDiet", func(c *gin.Context) {
+        Controllers.UpdateDietHandler(c)
     })
 	
 	// r.Static("/static", "./static")
