@@ -16,7 +16,11 @@ func main() {
 	_= DB.CreateTableUserDetails()
 
 	r := gin.Default()
-	r.LoadHTMLGlob("static/client/*")
+
+	// r.LoadHTMLGlob("static/client/*")
+    r.LoadHTMLGlob("static/**/*.html")
+	r.Static("/css", "static/css")
+	r.Static("/logos", "static/logos")
 
     //client endpoints
 	r.GET("/", func(c *gin.Context) {
@@ -24,7 +28,7 @@ func main() {
     })
 
     r.GET("/login", func(c *gin.Context) {
-        c.HTML(http.StatusOK, "login.html", gin.H{})
+        c.HTML(http.StatusOK, "auth.html", gin.H{})
     })
 
     r.GET("/signup", func(c *gin.Context) {
