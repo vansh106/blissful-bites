@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "blissful-bites-9985b",
+  "private_key_id": "a46313e893974bc581194a74852780e63de7fbae",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC9FE4Z77pwQWCY\n3QFl9U41JqXr0DEMZlz8MB+Eq+9RINtaqjsg2kVOMzjdw0w5kYBgMR43iX4249/W\na/z2xwir15mNXNxV5dChBpt6DYveId2rFpGejWlv6AvP88PP4oWj2lvsUFRLEql2\ne7EBs22BtZJ55g4sr3LjYfhuEaVfHyWcv3ZVgDp9kfmLxP6XqO3F7pQLJlV78BSs\n5VX+HXzvLt1rc1yuE/iwzTS0/fWfHLMFsa4A3nMEoFIsn5a54S8WwV43cgHsV/jY\nYJm9FiGqRmfBrhsxQamrBoZ7a9PzmQO6vmJoaL//3WR9pIeMGNUqliQ2kU9MW0Rx\nh6BVLTQBAgMBAAECggEAJNo/zLtWXcnIT5MH0j0JJL/nJ/qYjL+o0Ph6NCwkxW2/\ng0DZrHIOfwrpwwNtKG1NFbKNHqr8QCuS9aJvmBO8A25OvehDA7T6wF/ezt+0CrQU\nFeQctsf+LHMQVlQ/LpYKkSCeuQUBIO6+u9qo6dl0dwsSRRMLYTdDD8GJH77tuges\nvZmhIVMDorlr4MMFo7b3ZZ45N3uyjQjBflC0ETqTZI9DzX3yg8+serkxsmJxxzHj\nHURP6I3CUWV6Ap+Y3qMd+HezMOkClPYlCVO9my7V9eB6OQMOnR/rpYahUUtGWsW9\n10LV4z4/14NmP8I02NindJEv1z2cnnuvWX37hmctFwKBgQDmM7+tlia4rBrmLyn1\ncdUSjVEYPk76vlN7M/vK7driS9+A0tOhyYFuzDQiZT2nVNDPjmNUhD+PoeMxAK9n\ngpoyBOYQG5A+pSkSI24wHsagHf0A8nIUhE/P0SPa5L8jdSybJlT6eDG3mtivGoFV\nQaGedB+ljV7sGVj7yPpSIMlnzwKBgQDSRMlqwPhYxLpF0AGrkb0lp0/bLvnioJsE\nAu8gi1omfqk14YKE+d9sCH+wyb2tWB8rdkZ/8vjqzEV5RaOn+KNMKWwKpaSgWzhc\nXvkwHGH7PuXSzaVFffJd2wCQtuZBcWeThMF8QkMYl8dWE6dgxBuEkctKy4TSKsaa\nhjv6DX7LLwKBgQCWgX7wnxrx4pQzquJj9ui4GGzMzPAWQBmUk4gsRRa2naSjNTPo\nszZMmnX7hvWoUWu0SAPpXg2wesdvYmNL6bemvE0uetb0Hkeb9E42Z+i1BuZDmD+9\n6kPEO5iVpLjTFej0BzvIBo163WKOGWY1t5NTZdjLBILrGidzdxMyXv1PQQKBgFhv\nrfdEai+LrnymW815YoBvulqJi3gR7KDnSwP5GFWQeEK9MlQTdDDP8kS81RYPNizl\ndglie+blO2MiMw72uFfUJCjmOjNnqnDPUSc3CM7PSYI8FAMCUem/rqEvC/ECbXnS\nID7O78FsNN6zLXa5hIlheItgxeBPNXDQfHFTM7zpAoGAdXGkEtxwqNN3LKeLNbEg\nH+F9gd5nJYBhnsYHKqDtm78MssxOqHrz/RV1/h1vtVNqvA8E/YH4l81+IgTsvosv\n+HuXcq1ybGQb84VcuaGRoMfs54RFefSt2vLpFpiEBUep/HMjHsgkTR+pEmGRo2JT\n/AmZRsZwq/1+nkj1ZVPvnAk=\n-----END PRIVATE KEY-----\n",
+  "client_email": "firebase-adminsdk-bbmii@blissful-bites-9985b.iam.gserviceaccount.com",
+  "client_id": "107668791212916597926",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-bbmii%40blissful-bites-9985b.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
