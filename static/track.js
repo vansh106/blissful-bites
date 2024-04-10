@@ -23,7 +23,7 @@ onAuthStateChanged(auth, (user) => {
         email = user.email
         console.log("User is signed in:", user);
         document.getElementById("email").value = email;
-        const url = `http://localhost:8000/userDetails?email=${user.email}`;
+        const url = `/userDetails?email=${user.email}`;
         fetch(url)
             .then(response => {
                 if (!response.ok) {

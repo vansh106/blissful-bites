@@ -34,7 +34,7 @@
                 <form id="signInForm">
                     <input type="email" class="email ele" name="email" placeholder="youremail@email.com"><br>
                     <input type="password" class="password ele" name="password" placeholder="password"><br>
-                    <center><button class="clkbtn" type="submit" >Login</button></center>
+                    <center><button class="clkbtn" type="submit">Login</button></center>
                 </form>
             </div>
 
@@ -47,6 +47,8 @@
                 </form>
             </div>
         </div>
+        <br>
+        <br>
     </div>
     <script>
         let signup = document.querySelector(".signup");
@@ -112,6 +114,7 @@
                     const errorMessage = error.message;
                     console.error("Error signing in:", errorCode, errorMessage);
                     // Handle sign-in errors, e.g., display error message to the user
+                    alert(errorMessage)
                 });
         });
 
@@ -146,7 +149,7 @@
         onAuthStateChanged(auth, (user) => {
             if (user) {
                 console.log("User is signed in:", user.email);
-                const url = `http://localhost:8000/firstlogin?email=${user.email}`;
+                const url = `/firstlogin?email=${user.email}`;
 
                 fetch(url)
                     .then(response => {
@@ -191,7 +194,7 @@
             }
         });
     </script>
-
+    <br>
 </body>
 
 </html>

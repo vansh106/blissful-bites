@@ -5,7 +5,8 @@ import (
 	// "encoding/json"
 	"encoding/json"
 	"fmt"
-	_ "github.com/lib/pq"
+	// _ "github.com/lib/pq"
+	_ "github.com/jackc/pgx/v5/stdlib"
 	"strconv"
 	"strings"
 	// "reflect"
@@ -22,11 +23,11 @@ const (
 var db *sql.DB
 var err error
 
-func ConnectPsql() error {
+func ConnectPsql(user string, pass string, host string, port string, dbname string) error {
 
-	psqlconn := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable", host, port, user, password, dbname)
+	psqlInfo := fmt.Sprintf("postgres://%s:%s@%s:%s/%s", user, pass, host, port, dbname)
 
-	db, err = sql.Open("postgres", psqlconn)
+	db, err = sql.Open("pgx", psqlInfo)
 	if err != nil {
 		fmt.Println("[DB] Error connecting to postgres server.")
 		return err

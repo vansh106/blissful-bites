@@ -23,12 +23,12 @@ func ContactHandler(c *gin.Context) {
 }
 
 func DmHandler(c *gin.Context){
-	allDms, err := DB.ReadAllUsers("SELECT email, dm FROM user_details")
+	allDms, err := DB.ReadAllUsers("SELECT name,email, dm FROM user_details")
 	if err != nil {
 		fmt.Println("[All Dms handler]", err)
 		c.JSON(http.StatusInternalServerError, gin.H{"error":err.Error()})
 		return
 	}
-	fmt.Println(allDms)
+	// fmt.Println(allDms)
 	c.HTML(http.StatusOK, "dm.html", allDms)
 }

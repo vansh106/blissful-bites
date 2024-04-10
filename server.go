@@ -7,12 +7,21 @@ import (
 	Controllers "blissfulbites/Controllers"
 	"github.com/gin-gonic/gin"
 	"net/http"
+    "github.com/joho/godotenv"
+    "fmt"
+    "os"
+    
 )
 
 
 func main() {
 
-	_= DB.ConnectPsql()
+    err := godotenv.Load("cred.env")
+	if err != nil {
+		fmt.Println("[server] Error loading .env file")
+	}
+
+	_= DB.ConnectPsql(os.Getenv("POSTGRES_USER"), os.Getenv("POSTGRES_PASS"), os.Getenv("POSTGRES_HOST"), os.Getenv("POSTGRES_PORT"), os.Getenv("POSTGRES_DB"))
 	_= DB.CreateTableUserDetails()
 
 	r := gin.Default()

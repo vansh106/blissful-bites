@@ -8,10 +8,9 @@
   <meta name="description" content="">
   <title>admin</title>
   <link rel="stylesheet" href="./static/nicepage.css" media="screen">
-  <link rel="stylesheet" href="./static/admin.css" media="screen">
+  <link rel="stylesheet" href="./static/dm.css" media="screen">
   <script class="u-script" type="text/javascript" src="./static/jquery-1.9.1.min.js" defer=""></script>
   <script class="u-script" type="text/javascript" src="./static/nicepage.js" defer=""></script>
-  <script class="u-script" type="module" src="./static/admin.js" defer=""></script>
   <meta name="generator" content="Nicepage 6.7.8, nicepage.com">
   <link id="u-theme-google-font" rel="stylesheet"
     href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i|Open+Sans:300,300i,400,400i,500,500i,600,600i,700,700i,800,800i">
@@ -59,8 +58,8 @@
         <div class="u-custom-menu u-nav-container">
           <ul class="u-nav u-unstyled u-nav-1">
             <li class="u-nav-item"><a
-                class="u-button-style u-nav-link u-text-active-custom-color-1 u-text-hover-custom-color-1"
-                href="/admin" style="padding: 10px 20px;">Admin</a>
+                class="u-button-style u-nav-link u-text-active-custom-color-1 u-text-hover-custom-color-1" href="/admin"
+                style="padding: 10px 20px;">Admin</a>
             </li>
             <li class="u-nav-item"><a
                 class="u-button-style u-nav-link u-text-active-custom-color-1 u-text-hover-custom-color-1"
@@ -92,29 +91,26 @@
   <section class="u-clearfix u-section-1" id="sec-b754">
     <div
       class="u-clearfix u-sheet u-valign-middle-lg u-valign-middle-md u-valign-middle-sm u-valign-middle-xl u-sheet-1">
-      <p class="u-custom-font u-text u-text-1">All Clients </p>
+      <p class="u-custom-font u-text u-text-1">All DMs </p>
     </div>
   </section>
   <section class="u-clearfix u-section-2" id="sec-820d">
-    <div class="u-clearfix u-sheet u-valign-bottom-md u-valign-bottom-sm u-valign-bottom-xs u-sheet-1">
-      <div id="userList">
-        {{ range . }}
-        <div
-          class="u-border-3 u-border-palette-5-light-1 u-container-style u-custom-color-2 u-expanded-width u-group u-opacity u-opacity-45 u-radius u-shape-round u-group-1">
-          <div class="u-container-layout u-container-layout-1">
-            <h3 class="u-custom-font u-text u-text-1">{{ .name }}</h3>
-            <h3
-              class="u-custom-font u-text u-text-default-lg u-text-default-md u-text-default-sm u-text-default-xl u-text-2">
-              {{ .email }}</h3>
-            <a href="/user?email={{ .email }}"
-              class="u-border-none u-btn u-btn-round u-button-style u-hover-custom-color-2 u-radius u-white u-btn-1">OPEN<span
-                style="font-weight: 700;"></span>
-            </a>
+    {{ range . }}
+    <div class="u-clearfix u-sheet u-valign-middle u-sheet-1">
+      <div
+        class="u-border-3 u-border-palette-5-light-1 u-container-style u-custom-color-2 u-expanded-width u-group u-opacity u-opacity-45 u-radius u-shape-round u-group-1">
+        <div class="u-container-layout u-container-layout-1">
+          <div class="inline">
+            <h3 class="u-custom-font u-text u-text-custom-color-3 u-text-1">{{ .name }}</h3>
+          </div>
+          <div>
+            <h3 class="u-custom-font u-font-georgia u-text u-text-2"><b>Message:</b></h3>
+            <h3 class="u-custom-font u-font-georgia u-text u-text-2">{{ .dm }}</h3>
           </div>
         </div>
-        {{ end }}
       </div>
     </div>
+    {{ end }}
   </section>
 
 
