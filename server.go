@@ -9,6 +9,7 @@ import (
 	"net/http"
     "github.com/joho/godotenv"
     "fmt"
+    "log"
     "os"
     
 )
@@ -104,5 +105,6 @@ func main() {
     })
 	
 	// r.Static("/static", "./static")
-	r.Run(":8000")
+	// r.Run(":8000")
+    log.Fatal(r.Run("0.0.0.0:"+os.Getenv("PORT")))
 }
