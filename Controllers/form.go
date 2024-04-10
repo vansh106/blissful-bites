@@ -9,8 +9,7 @@ import (
 )
 
 func FormHandler(c *gin.Context) {
-	number := c.PostForm("age")
-	fmt.Println(number)
+	
 	if err := c.Request.ParseForm(); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Failed to parse form data"})
 		return
@@ -23,7 +22,6 @@ func FormHandler(c *gin.Context) {
 			formData[key] = values
 		}
 	}
-
 	err := DB.InsertUserData(formData)
 	if err != nil {
 		fmt.Println("[FORM handler]", err)

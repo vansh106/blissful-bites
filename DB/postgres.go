@@ -78,7 +78,6 @@ func InsertUserData(values map[string]interface{}) error {
 	}
 
 	activityLevel, _ := values["activityLevel"].(string)
-	goals, _ := values["goals"].([]string)
 
 	heightStr, _ := values["height"].(string)
 	height, err := strconv.ParseFloat(heightStr, 64)
@@ -96,7 +95,18 @@ func InsertUserData(values map[string]interface{}) error {
 		fmt.Println("Conversion error:", err)
 	}
 	// "tweight" key in the map
-	diseases, _ := values["disease"].([]string) // "disease" key in the map
+	disease := ""
+	goal  := ""
+
+	goals, ok := values["goals"].([]string)
+	if !ok {
+		goal,_ = values["goals"].(string)
+	} 
+
+	diseases, ok := values["disease"].([]string)
+	if !ok {
+		disease,_ = values["disease"].(string)
+	} // "disease" key in the map
 	email, _ := values["email"].(string)
 
 	hsStr, _ := values["healthscore"].(string)
@@ -106,10 +116,20 @@ func InsertUserData(values map[string]interface{}) error {
 	}
 
 	// Convert arrays to comma-separated strings
-	goalsStr := strings.Join(goals, ",")
-	diseasesStr := strings.Join(diseases, ",")
+	var goalsStr string
+	var diseasesStr string
+	if goal == "" {
+		goalsStr = strings.Join(goals, ",")
+	} else {
+		goalsStr = goal
+	}
+	if disease == "" {
+		diseasesStr = strings.Join(diseases, ",")
+	} else {
+		diseasesStr = disease
+	}
 
-	fmt.Println(name, gender, age, activityLevel, goalsStr, height, weight, targetWeight, diseasesStr, email)
+	// fmt.Println(name, gender, age, activityLevel, goalsStr, height, weight, targetWeight, diseasesStr, email)
 	// Prepare the SQL query
 	query := `
         INSERT INTO user_details (name, gender, age, activity_level, goals, height, weight, target_weight, diseases, email, healthscore)
