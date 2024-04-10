@@ -18,13 +18,18 @@ func main() {
 	r := gin.Default()
 
 	// r.LoadHTMLGlob("static/client/*")
-    r.LoadHTMLGlob("static/**/*.html")
-	r.Static("/css", "static/css")
-	r.Static("/logos", "static/logos")
+    r.LoadHTMLGlob("static/*.html")
+	// r.Static("/css", "static/css")
+	// r.Static("/logos", "static/logos")
+	r.Static("/images", "./static/images")
+	r.Static("/intlTelInput", "./static/intlTelInput")
+	r.Static("/static", "./static")
+ 
+
 
     //client endpoints
 	r.GET("/", func(c *gin.Context) {
-        c.HTML(http.StatusOK, "home.html", gin.H{})
+        c.Redirect(http.StatusFound, "/login")
     })
 
     r.GET("/login", func(c *gin.Context) {
@@ -36,7 +41,7 @@ func main() {
     })
 
 	r.GET("/dashboard", func(c *gin.Context) {
-        c.HTML(http.StatusOK, "dashboard.html", gin.H{})
+        c.HTML(http.StatusOK, "Home.html", gin.H{})
     })
 
 	r.GET("/form", func(c *gin.Context) {
@@ -48,7 +53,7 @@ func main() {
     })
 
     r.GET("/contact", func(c *gin.Context) {
-        c.HTML(http.StatusOK, "contact.html", gin.H{})
+        c.HTML(http.StatusOK, "Contact.html", gin.H{})
     })
 
     r.POST("/contactUs", func(c *gin.Context) {
@@ -90,5 +95,5 @@ func main() {
     })
 	
 	// r.Static("/static", "./static")
-	r.Run(":8080")
+	r.Run(":8000")
 }

@@ -6,12 +6,12 @@
     <meta name="viewport" content="width=device-width, 
 						initial-scale=1.0">
     <title>Blissful Bites</title>
-    <link rel="stylesheet" href="./../css/login.css">
+    <link rel="stylesheet" href="./static/login.css">
 </head>
 
 <body>
     <header>
-        <img class="logo" src="./../logos/svg/logo-no-background.svg" alt="logo" style="height: 90px; width: 400px;">
+        <img class="logo" src="/images/logo-no-background.svg" alt="logo" style="height: 90px; width: 400px;">
     </header>
 
     <!-- container div -->
@@ -146,7 +146,7 @@
         onAuthStateChanged(auth, (user) => {
             if (user) {
                 console.log("User is signed in:", user.email);
-                const url = `http://localhost:8080/firstlogin?email=${user.email}`;
+                const url = `http://localhost:8000/firstlogin?email=${user.email}`;
 
                 fetch(url)
                     .then(response => {

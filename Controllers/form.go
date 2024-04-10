@@ -9,6 +9,8 @@ import (
 )
 
 func FormHandler(c *gin.Context) {
+	number := c.PostForm("age")
+	fmt.Println(number)
 	if err := c.Request.ParseForm(); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Failed to parse form data"})
 		return
@@ -28,7 +30,7 @@ func FormHandler(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"message": "server error to store form"})
 	}
 
-	c.Redirect(http.StatusSeeOther, "/dashboard")
+	c.Redirect(http.StatusFound, "/dashboard")
 }
 
 func AppendMealsHandler(c *gin.Context) {
