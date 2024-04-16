@@ -139,7 +139,7 @@ func ImageProcess(c *gin.Context, id string) map[string]interface{} {
 
 		return nil
 	}
-	defer file.Close()
+	// defer file.Close()
 	fmt.Println("image processing phase2")
 
 	breakfast_imgType := GetMime(header)
