@@ -24,7 +24,7 @@ func UserDataHandler(c *gin.Context) {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": "failed to unmarshal JSON data"})
 			return
 		}
-
+		
 		delete(data, "track")
 
 		data["track"] = nestedData
@@ -53,3 +53,5 @@ func FirstLoginHandler(c *gin.Context) {
 		c.JSON(http.StatusNotFound, gin.H{"message": "Email does not exist"})
 	}
 }
+
+

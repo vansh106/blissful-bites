@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="./static/track.css" media="screen">
   <script class="u-script" type="text/javascript" src="./static/jquery-1.9.1.min.js" defer=""></script>
   <script class="u-script" type="text/javascript" src="./static/nicepage.js" defer=""></script>
-  <script class="u-script" type="module" src="./static/track.js" defer=""></script>
+  <script class="u-script" type="module" src="./static/js/track.js" defer=""></script>
   <meta name="generator" content="Nicepage 6.7.8, nicepage.com">
   <meta name="referrer" content="origin">
   <link id="u-theme-google-font" rel="stylesheet"
@@ -101,21 +101,27 @@
               <div class="u-form-email u-form-group u-label-none">
                 <label for="email-6797" class="u-label">Breakfast</label>
                 <input type="text" placeholder="Breakfast" id="breakfast" name="breakfast"
-                  class="u-input u-input-rectangle" required="">
+                  class="u-input u-input-rectangle">
+
+                <p>Or upload an image: <input type="file" id="breakfast_img" name="breakfast_img" accept="image/*"
+                    capture="environment" /></p>
               </div><br>
               <div class="u-form-group u-label-none">
                 <label for="lunch" class="u-label">Lunch</label>
-                <input type="text" placeholder="Lunch" id="lunch" name="lunch" class="u-input u-input-rectangle"
-                  required="">
+                <input type="text" placeholder="Lunch" id="lunch" name="lunch" class="u-input u-input-rectangle">
+                <p>Or upload an image: <input type="file" id="lunch_img" name="lunch_img" accept="image/*"
+                    capture="environment" /></p>
               </div><br>
               <div class="u-form-group u-label-none">
                 <label for="dinner" class="u-label">Dinner</label>
-                <input type="text" placeholder="Dinner" id="dinner" name="dinner" class="u-input u-input-rectangle"
-                  required=""><br>
+                <input type="text" placeholder="Dinner" id="dinner" name="dinner" class="u-input u-input-rectangle">
+                <p>Or upload an image: <input type="file" id="dinner_img" name="dinner_img" accept="image/*"
+                    capture="environment" /></p>
+                <br>
               </div>
 
               <div class="u-form-group u-label-none">
-                <label for="weight" class="u-label">Dinner</label>
+                <label for="weight" class="u-label">Weight</label>
                 <input type="number" placeholder="Calculated Weight" id="weight" name="weight"
                   class="u-input u-input-rectangle" required="">
               </div>
@@ -136,7 +142,7 @@
   </section>
   <section class="u-align-center u-clearfix u-section-2" id="sec-9313">
     <div class="u-clearfix u-sheet u-sheet-1">
-    <div id="trackDataContainer"></div>
+      <div id="trackDataContainer"></div>
   </section> <br>
 
 

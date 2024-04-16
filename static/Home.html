@@ -8,9 +8,9 @@
   <meta name="description" content="">
   <title>Home</title>
   <link rel="stylesheet" href="./static/nicepage.css" media="screen">
-  <link rel="stylesheet" href="./static/Home.css" media="screen">
+  <link rel="stylesheet" href="./static/css/Home.css" media="screen">
   <script class="u-script" type="text/javascript" src="./static/jquery-1.9.1.min.js" defer=""></script>
-  <script class="u-script" type="module" src="./static/home.js" defer=""></script>
+  <script class="u-script" type="module" src="./static/js/home.js" defer=""></script>
   <script class="u-script" type="text/javascript" src="./static/nicepage.js" defer=""></script>
   <meta name="generator" content="Nicepage 6.7.8, nicepage.com">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -120,6 +120,7 @@
                   <div
                     class="u-container-layout u-valign-top-lg u-valign-top-md u-valign-top-sm u-valign-top-xs u-container-layout-2">
                     <p class="u-custom-font u-text u-text-8" id="diet_plan">{diet plan }</p>
+                    <button id="gendietplan" class="generate-button" >Generate Diet plan</button>
                   </div>
                 </div>
               </div>
@@ -160,6 +161,14 @@
           <canvas id="weightChart"></canvas>
         </div>
       </div>
+
+      <h5 class="u-custom-font u-text u-text-default-lg u-text-default-md u-text-default-sm u-text-default-xs u-text-2">
+        Your Daily Calorie intake:</h5>
+      <div class="u-container-style u-expanded-width u-grey-5 u-group u-radius u-shape-round u-group-1">
+        <div class="u-container-layout u-container-layout-1">
+          <canvas id="calorieChart"></canvas>
+        </div>
+      </div>
     </div>
 
   </section>
@@ -186,9 +195,9 @@
   </script>
   <script>
     // Function to create weight chart
-    function createWeightChart(weightMap) {
+    function createWeightChart(weightMap, id, l) {
       // Get canvas element
-      var ctx = document.getElementById('weightChart').getContext('2d');
+      var ctx = document.getElementById(id).getContext('2d');
 
       // Extract dates and weights from weightMap
       var dates = Object.keys(weightMap);
@@ -203,9 +212,9 @@
         data: {
           labels: dates,
           datasets: [{
-            label: 'Weight',
+            label: l,
             data: weights,
-            borderColor: 'blue',
+            borderColor: 'green',
             borderWidth: 1,
             fill: false
           }]
@@ -214,7 +223,7 @@
           responsive: true,
           title: {
             display: true,
-            text: 'Weight over Dates'
+            text: l+' over Dates'
           },
           scales: {
             xAxes: [{
@@ -230,7 +239,7 @@
             yAxes: [{
               scaleLabel: {
                 display: true,
-                labelString: 'Weight'
+                labelString: l
               }
             }]
           }

@@ -32,10 +32,10 @@ onAuthStateChanged(auth, (user) => {
                 return response.json();
             })
             .then(data => {
-                console.log("received user's data")
-                
+                // console.log("received user's data")
+
                 var trackData = data.track;
-                
+
                 createTrackDataContainer("trackDataContainer", trackData)
             })
             .catch(error => {
@@ -50,11 +50,17 @@ document.getElementById('date').value = new Date().toISOString().slice(0, 10);
 document.getElementById('trackForm').addEventListener('submit', function (event) {
     event.preventDefault();
 
-    var formData = new FormData(this);
+    var data = new FormData(this);
+    // var formData = new FormData();
+    // formData.append('breakfast_img', document.getElementById('breakfast_img').files[0]);
+
+    // for (var pair of formData.entries()) {
+    //     data.append(pair[0], pair[1]);
+    // }
 
     fetch('/trackMeal', {
         method: 'POST',
-        body: formData
+        body: data
     })
         .then(response => {
             if (!response.ok) {
@@ -70,14 +76,14 @@ document.getElementById('trackForm').addEventListener('submit', function (event)
             document.getElementById('weight').value = '';
 
             alert('Your meals have been tracked successfully!');
+            window.location.href = "/track";
+
         })
         .catch(error => {
-            alert('Oops! Something went wrong. Please try again later.');
+            alert(error);
         });
 });
-
 function createTrackDataContainer(elementId, trackData) {
-    // Get a reference to the track data container element
     var trackDataContainer = document.getElementById(elementId);
 
     // Loop through each track in the track data
@@ -101,12 +107,24 @@ function createTrackDataContainer(elementId, trackData) {
                     // Create a new paragraph element for each property
                     var paragraph = document.createElement("b");
                     paragraph.classList.add("u-custom-font", "u-text", "u-text-default");
-                    if (key == "weight"){
-                        paragraph.textContent = "Calculated Weight: " + track[key];
+
+                    // Handle nested objects (breakfast, lunch, dinner)
+                    if (typeof track[key] === 'object' && key !== 'weight') {
+                        var subHeading = document.createElement("b");
+                        subHeading.textContent = key;
+                        layoutDiv.appendChild(subHeading);
+
+                        // Loop through sub-properties (food items and calories)
+                        for (var subKey in track[key]) {
+                            var subParagraph = document.createElement("p");
+                            subParagraph.style.fontSize = "16px";
+                            subParagraph.textContent = subKey + ": " + track[key][subKey];
+                            layoutDiv.appendChild(subParagraph);
+                        }
                     } else {
-                        paragraph.textContent = key+":   "+ track[key];
+                        paragraph.textContent = key + ": " + track[key];
                     }
-                    
+
                     // Append the paragraph to the layout div
                     layoutDiv.appendChild(paragraph);
                 }
@@ -125,8 +143,6 @@ function createTrackDataContainer(elementId, trackData) {
         console.log("trackData is null or empty");
     }
 }
-
-
 const logout = document.getElementById("logoutButton");
 logout.addEventListener('click', () => {
     signOut(auth).then(() => {

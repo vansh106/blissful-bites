@@ -18,6 +18,8 @@ const auth = getAuth(app);
 
 auth.onAuthStateChanged(console.log)
 var email;
+let userData2 = null;
+
 onAuthStateChanged(auth, (user) => {
     if (user) {
         // User is signed in
@@ -34,6 +36,7 @@ onAuthStateChanged(auth, (user) => {
                 return response.json();
             })
             .then(data => {
+                userData2 = data
                 console.log("received user's data")
                 var weightInKg = data.weight;
                 var heightInCm = data.height;
@@ -49,7 +52,12 @@ onAuthStateChanged(auth, (user) => {
                 var trackData = data.track;
                 var weightMap = extractWeightValues(trackData);
                 console.log(weightMap);
-                createWeightChart(weightMap);
+
+                var calorieMap = extractCalorieValues(trackData);
+                console.log(calorieMap);
+
+                createWeightChart(weightMap, "weightChart", "weight");
+                createWeightChart(calorieMap, "calorieChart", "Total Calories");
 
                 // createTrackDataContainer("trackDataContainer", trackData)
                 document.getElementById('name').innerHTML = data.name;
@@ -65,34 +73,52 @@ onAuthStateChanged(auth, (user) => {
         console.log("No user is signed in");
         // You can handle this case, for example, redirecting the user to the login page
     }
+
+    document.getElementById('gendietplan').addEventListener('click', function () {
+        // Call the function to fetch data from the API
+        fetchDataFromAPI(userData2);
+    });
 });
 
-function createTrackDataContainer(elementId, trackData) {
-    // Get a reference to the track data container element
-    var trackDataContainer = document.getElementById(elementId);
-
-    // Loop through each track in the track data
-    if (trackData && trackData.length > 0) {
-        trackData.forEach(function (track) {
-            // Create a new div for the track
-            var trackDiv = document.createElement("div");
-            trackDiv.classList.add("track");
-
-            // Create paragraphs for each property of the track
-            for (var key in track) {
-                if (track.hasOwnProperty(key)) {
-                    var trackProperty = document.createElement("p");
-                    trackProperty.textContent = key + ": " + track[key];
-                    trackDiv.appendChild(trackProperty);
-                }
+function fetchDataFromAPI(userData) {
+    // Make a GET request using fetch API
+    // const url = `/genDietPlan?email=${email}`;
+    console.log(userData)
+    fetch('/genDietPlan', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(userData)
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
             }
+            return response.json();
+        })
+        .then(data => {
+            // Handle the data returned from the API
+            var dietPlan = data.diet_plan;
 
-            // Append the track div to the track data container
-            trackDataContainer.appendChild(trackDiv);
+            // Check if 'dietPlan' is a string or an array/object
+            if (typeof dietPlan === 'string') {
+                // If 'dietPlan' is a string, set it as the inner HTML directly
+                document.getElementById('diet_plan').innerHTML = dietPlan;
+            } else if (Array.isArray(dietPlan) || typeof dietPlan === 'object') {
+                // If 'dietPlan' is an array or object, you need to convert it to a string first
+                var jsonString = JSON.stringify(dietPlan);
+                document.getElementById('diet_plan').innerHTML = jsonString;
+            } else {
+                // Handle other data types if needed
+                console.error('Unexpected data type for diet_plan:', typeof dietPlan);
+            }
+        })
+        .catch(error => {
+            // Handle errors
+            console.error('There was a problem with the fetch operation:', error);
+            alert(error)
         });
-    } else {
-        console.log("trackData is null or empty");
-    }
 }
 
 function extractWeightValues(trackData) {
@@ -115,6 +141,35 @@ function extractWeightValues(trackData) {
 
     return weightMap;
 }
+function extractCalorieValues(trackData) {
+    var weightMap = {}; // Object to store total calorie values mapped with date
+  
+    // Loop through each track in the track data
+    if (trackData && trackData.length > 0) {
+      trackData.forEach(function (track) {
+        if (track.hasOwnProperty("date")) {
+          var totalCalories = 0;
+  
+          // Check if breakfast, lunch, and dinner objects exist
+          if (track.hasOwnProperty("breakfast") && track.breakfast.hasOwnProperty("Total calories")) {
+            totalCalories += track.breakfast["Total calories"];
+          }
+          if (track.hasOwnProperty("lunch") && track.lunch.hasOwnProperty("Total calories")) {
+            totalCalories += track.lunch["Total calories"];
+          }
+          if (track.hasOwnProperty("dinner") && track.dinner.hasOwnProperty("Total calories")) {
+            totalCalories += track.dinner["Total calories"];
+          }
+  
+          weightMap[track.date] = totalCalories;
+        }
+      });
+    } else {
+      console.log("trackData is null or empty");
+    }
+  
+    return weightMap;
+  }
 
 
 const logout = document.getElementById("logoutButton");

@@ -5,6 +5,7 @@ package main
 import (
 	DB "blissfulbites/DB"
 	Controllers "blissfulbites/Controllers"
+	AI "blissfulbites/AI"
 	"github.com/gin-gonic/gin"
 	"net/http"
     "github.com/joho/godotenv"
@@ -16,11 +17,12 @@ import (
 
 
 func main() {
-
     err := godotenv.Load("cred.env")
 	if err != nil {
-		fmt.Println("[server] Error loading .env file")
+        fmt.Println("[server] Error loading .env file")
 	}
+    
+    AI.InitializeModel(os.Getenv("GOOGLE_API_KEY"))
 
 	_= DB.ConnectPsql(os.Getenv("POSTGRES_USER"), os.Getenv("POSTGRES_PASS"), os.Getenv("POSTGRES_HOST"), os.Getenv("POSTGRES_PORT"), os.Getenv("POSTGRES_DB"))
 	_= DB.CreateTableUserDetails()
@@ -31,9 +33,10 @@ func main() {
     r.LoadHTMLGlob("static/*.html")
 	// r.Static("/css", "static/css")
 	// r.Static("/logos", "static/logos")
+	r.Static("/static", "./static")
+	// r.Static("/static/js", "./static/js")
 	r.Static("/images", "./static/images")
 	r.Static("/intlTelInput", "./static/intlTelInput")
-	r.Static("/static", "./static")
  
 
 
@@ -85,6 +88,11 @@ func main() {
 	r.GET("/firstlogin", func(c *gin.Context) {
         Controllers.FirstLoginHandler(c)
     })
+
+    r.POST("/genDietPlan", func(c *gin.Context) {
+        Controllers.GenDietPlan(c)
+    })
+
 
     // admin endpoints
     

@@ -1,6 +1,11 @@
 .u-section-1 .u-sheet-1 {
   min-height: 681px;
 }
+.generate-button {
+  border-radius: 5px; /* Add rounded corners */
+  background-color: white; /* Set background color to white */
+  font-family: 'Alata', sans-serif; /* Set font style to Alata */
+}
 
 .u-section-1 .u-layout-wrap-1 {
   margin-top: 23px;
