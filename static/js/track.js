@@ -60,9 +60,6 @@ document.getElementById('trackForm').addEventListener('submit', function (event)
 
     fetch('/trackMeal', {
         method: 'POST',
-        headers: {
-            'Content-Type': 'multipart/form-data'
-        },
         body: data
     })
         .then(response => {
