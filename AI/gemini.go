@@ -40,9 +40,10 @@ You are an expert in nutritionist where you need to see the food items from the 
 		return nil,err
 
 	}
-	fmt.Println(resp.Candidates[0].Content.Parts[0])
+	// fmt.Println(resp.Candidates[0].Content.Parts[0])
 	var jsonData []byte
 	if jsonData, err = json.Marshal(resp); err != nil {
+
 		return nil,err
 	}
 	stringData := string(jsonData)

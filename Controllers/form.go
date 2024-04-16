@@ -12,7 +12,7 @@ import (
 	"net/http"
 	"strconv"
 	"sync"
-	"time"
+	// "time"
 )
 
 func FormHandler(c *gin.Context) {
@@ -39,54 +39,51 @@ func FormHandler(c *gin.Context) {
 }
 
 func AppendMealsHandler(c *gin.Context) {
-
+	form, err := c.MultipartForm()
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
 	var wg sync.WaitGroup
+	wg.Add(len(form.File))
+	// Define a channel to receive processed image information
+	processedImages := make(chan map[string]interface{}, len(form.File)) // Adjust capacity based on number of file fields
 
-	breakfastChan := make(chan map[string]interface{})
-	lunchChan := make(chan map[string]interface{})
-	dinnerChan := make(chan map[string]interface{})
+	// Loop through each image field in the form
+	for fieldName, files := range form.File {
+		for _, file := range files {
+			go func(fieldName string, file *multipart.FileHeader) {
+				defer wg.Done() // Signal completion after processing
+				ImageProcess(c, fieldName, file, processedImages)
+			}(fieldName, file)
+		}
+	}
 
-	wg.Add(3)
-
-	go func() {
-		fmt.Println("image processing 1 ")
-
-		defer wg.Done()
-		breakfastMap := ImageProcess(c, "breakfast_img")
-		breakfastChan <- breakfastMap
-	}()
-
-	go func() {
-		fmt.Println("image processing2")
-		time.Sleep(2 * time.Second)
-		defer wg.Done()
-		lunchMap := ImageProcess(c, "lunch_img")
-		lunchChan <- lunchMap
-	}()
-
-	go func() {
-		fmt.Println("image processing3")
-		time.Sleep(4 * time.Second)
-		defer wg.Done()
-		dinnerMap := ImageProcess(c, "dinner_img")
-		dinnerChan <- dinnerMap
-	}()
-	fmt.Println("idhar ")
-
-	breakfastResult := <-breakfastChan
-	lunchResult := <-lunchChan
-	dinnerResult := <-dinnerChan
 	
+	// Collect and respond with processed image information
 	wg.Wait()
-	fmt.Println("khatam")
+	close(processedImages) // Close the channel after all sends
 
+	var breakfastResult map[string]interface{}
+	var lunchResult map[string]interface{}
+	var dinnerResult map[string]interface{}
+
+	for processedImage := range processedImages {
+		fieldName := processedImage["fieldName"].(string)
+		if fieldName == "breakfast_img" {
+			breakfastResult = processedImage["data"].(map[string]interface{})
+		} else if fieldName == "lunch_img" {
+			lunchResult = processedImage["data"].(map[string]interface{})
+		} else if fieldName == "dinner_img" {
+			dinnerResult = processedImage["data"].(map[string]interface{})
+		}
+	}
 
 	email := c.PostForm("email")
 	date := c.PostForm("date")
 	breakfast := c.PostForm("breakfast")
 	lunch := c.PostForm("lunch")
 	dinner := c.PostForm("dinner")
-	fmt.Println(breakfast)
 	weight := c.PostForm("weight")
 
 	formData := make(map[string]interface{})
@@ -118,10 +115,10 @@ func AppendMealsHandler(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Dinner value empty."})
 		return
 	}
-
+	fmt.Println(formData)
 	formData["weight"] = weight
 
-	err := DB.AppendMeals(formData)
+	err = DB.AppendMeals(formData)
 	if err != nil {
 		fmt.Println("Couldn't track calories", formData, err)
 		c.HTML(http.StatusNotFound, "error.html", gin.H{"error": err})
@@ -131,42 +128,46 @@ func AppendMealsHandler(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"status": "message sent"})
 }
 
-func ImageProcess(c *gin.Context, id string) map[string]interface{} {
+func ImageProcess(c *gin.Context, fieldName string, file *multipart.FileHeader, processedImages chan map[string]interface{}) {
 	// fmt.Println("image processing")
-	file, header, err := c.Request.FormFile(id)
+	openedFile, err := file.Open()
 	if err != nil {
-		fmt.Println("image processing", id, err)
-
-		return nil
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
 	}
-	// defer file.Close()
-	fmt.Println("image processing phase2")
+	defer openedFile.Close()
 
-	breakfast_imgType := GetMime(header)
-	switch breakfast_imgType {
+	// Read the entire file content into a byte slice
+	imageData, err := ioutil.ReadAll(openedFile)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	// Identify image type using magic bytes
+	imageType := http.DetectContentType(imageData)
+
+	switch imageType {
 	case "image/png":
-		breakfast_imgType = "png"
+		imageType = "png"
 	case "image/webp":
-		breakfast_imgType = "webp"
+		imageType = "webp"
 	case "image/jpeg":
-		breakfast_imgType = "png"
+		imageType = "png"
 	default:
-		breakfast_imgType = "png"
+		imageType = "png"
 	}
 
-	breakfast_data, err := ioutil.ReadAll(file)
+	result_map, err := AI.GenImageAI(imageData, imageType)
 	if err != nil {
-		fmt.Println("[reading file]",err)
-		return nil
+		fmt.Println("[Image processing]", err)
 	}
 
-	breakfast_map, err := AI.GenImageAI(breakfast_data, breakfast_imgType)
-	if err != nil {
-		return nil
-
+	processedImages <- map[string]interface{}{
+		"fieldName": fieldName,
+		"data":      result_map, // Include the existing data map
 	}
-
-	return breakfast_map
+	
 }
 
 func GetMime(header *multipart.FileHeader) string {
