@@ -135,7 +135,7 @@ func ImageProcess(c *gin.Context, id string) map[string]interface{} {
 	// fmt.Println("image processing")
 	file, header, err := c.Request.FormFile(id)
 	if err != nil {
-		fmt.Println("image processing phase2", id, err)
+		fmt.Println("image processing", id, err)
 
 		return nil
 	}
@@ -156,6 +156,7 @@ func ImageProcess(c *gin.Context, id string) map[string]interface{} {
 
 	breakfast_data, err := ioutil.ReadAll(file)
 	if err != nil {
+		fmt.Println("[reading file]",err)
 		return nil
 	}
 
