@@ -58,7 +58,7 @@ func AppendMealsHandler(c *gin.Context) {
 
 	go func() {
 		fmt.Println("image processing2")
-		time.Sleep(4 * time.Second)
+		time.Sleep(2 * time.Second)
 		defer wg.Done()
 		lunchMap := ImageProcess(c, "lunch_img")
 		lunchChan <- lunchMap
@@ -66,7 +66,7 @@ func AppendMealsHandler(c *gin.Context) {
 
 	go func() {
 		fmt.Println("image processing3")
-		time.Sleep(7 * time.Second)
+		time.Sleep(4 * time.Second)
 		defer wg.Done()
 		dinnerMap := ImageProcess(c, "dinner_img")
 		dinnerChan <- dinnerMap
